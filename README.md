@@ -75,7 +75,12 @@ Apri una issue o una pull request per partecipare allo sviluppo.
 
 ## 📄 Licenza
 
-Questo progetto è distribuito sotto licenza MIT.
+## ⚠️ Licenza
+
+Questo progetto è protetto da copyright.  
+**Tutti i diritti riservati.**  
+Non è consentito copiare, modificare, distribuire o utilizzare il codice, in tutto o in parte, senza il consenso scritto dell’autore e senza il pagamento di un compenso economico.
+
 
 ---
 
