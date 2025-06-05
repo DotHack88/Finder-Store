@@ -460,10 +460,10 @@ def scarica_aggiornamento():
 
 def stampa_sfondo():
     larghezza = 80
-    titolo = "🎮 PlayStation Store Scraper"
+    titolo = "🎮 PlayStation Store Scraper 🎮"
     print(f"{Fore.BLUE}╭{'─' * (larghezza - 2)}╮")
     print(f"{Fore.BLUE}│{' ' * (larghezza - 2)}│")
-    print(f"{Fore.BLUE}│{titolo.center(larghezza - 3)}│")
+    print(f"{Fore.BLUE}│{titolo.center(larghezza - 4)}│")
     print(f"{Fore.BLUE}│{' ' * (larghezza - 2)}│")
     print(f"{Fore.BLUE}╰{'─' * (larghezza - 2)}╯{Style.RESET_ALL}")
 
