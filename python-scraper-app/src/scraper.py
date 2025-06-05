@@ -458,15 +458,19 @@ def scarica_aggiornamento():
     except Exception as e:
         messagebox.showerror("Errore", f"Errore durante il download: {e}")
 
-controlla_aggiornamenti()
+def stampa_sfondo():
+    larghezza = 80
+    titolo = "🎮 PlayStation Store Scraper"
+    print(f"{Fore.BLUE}╭{'─' * (larghezza - 2)}╮")
+    print(f"{Fore.BLUE}│{' ' * (larghezza - 2)}│")
+    print(f"{Fore.BLUE}│{titolo.center(larghezza - 3)}│")
+    print(f"{Fore.BLUE}│{' ' * (larghezza - 2)}│")
+    print(f"{Fore.BLUE}╰{'─' * (larghezza - 2)}╯{Style.RESET_ALL}")
 
 if __name__ == "__main__":
-    while True:  # Loop principale
-        print(f"{Fore.CYAN}{'🟦'*20}")
-        print(f"{Fore.YELLOW}🎮 Benvenuto nel PlayStation Store Scraper!{Style.RESET_ALL}")
-        print(f"{Fore.CYAN}{'🟦'*20}")
-        print(f"{Fore.LIGHTRED_EX}⚠️  Questo programma è opera di Emanuele Barese ed è vietato l'uso e la commercializzazione!{Style.RESET_ALL}")
-        print(f"{Fore.CYAN}{'🟦'*20}")
+    while True:
+        stampa_sfondo()
+        print(f"{Fore.LIGHTRED_EX}⚠️  Questo programma è opera di DotHack88. Ne è vietata la vendita e la distribuzione non autorizzata!{Style.RESET_ALL}")
 
         print(f"{Fore.GREEN}Cosa vuoi cercare?")
         print(f"{Fore.WHITE}1. 🔎 Cerca per ID gioco (consigliato)")
@@ -496,7 +500,7 @@ if __name__ == "__main__":
             break  # Esce dal loop e chiude il programma
         elif scelta == "3":
             print(f"{Fore.CYAN}ℹ️  Questo programma ti permette di confrontare prezzi e lingue dei giochi PlayStation Store nei vari paesi!{Style.RESET_ALL}")
-            print(f"{Fore.LIGHTRED_EX}⚠️  Opera di Emanuele Barese. Vietato l'uso e la commercializzazione!{Style.RESET_ALL}")
+            print(f"{Fore.LIGHTRED_EX}⚠️  Questo programma è opera di DotHack88. Ne è vietata la vendita e la distribuzione non autorizzata!{Style.RESET_ALL}")
             print(f"{Fore.CYAN}🔜 Prossimamente: ricerca per nome, filtri avanzati e molto altro!{Style.RESET_ALL}")
         elif scelta == "4":
             ricerca_con_filtri()
