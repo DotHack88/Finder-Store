@@ -301,15 +301,15 @@ def fetch_game_info(game_id):
     return results
 
 def mostra_ultimi_giochi():
-    url = "https://store.playstation.com/it-it/category/e1699f77-77e1-43ca-a296-26d08abacb0f/"
+    url = "https://store.playstation.com/it-it/latest"
     print(f"{Fore.CYAN}{'🟦'*20}")
-    print(f"{Fore.YELLOW}Estrazione degli ultimi giochi dal PlayStation Store...{Style.RESET_ALL}")
+    print(f"{Fore.YELLOW}Estrazione dei Pre-Ordini dal PlayStation Store...{Style.RESET_ALL}")
     try:
         response = requests.get(url, headers=HEADERS, timeout=10)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         giochi = []
-        # Cerca i giochi nei tag <a> con href contenente "/product/"
+        LIMITE_GIOCHI = 20
         for a in soup.find_all('a', href=True):
             href = a['href']
             if '/product/' in href:
@@ -317,14 +317,35 @@ def mostra_ultimi_giochi():
                 id_gioco = href.split('/product/')[-1]
                 if titolo and id_gioco:
                     giochi.append((titolo, id_gioco))
-            if len(giochi) >= 5:
+            if len(giochi) >= LIMITE_GIOCHI:
                 break
         if not giochi:
             print(f"{Fore.RED}Nessun gioco trovato!{Style.RESET_ALL}")
             return
-        print(f"{Fore.YELLOW}Ecco alcuni degli ultimi giochi usciti su PlayStation Store:{Style.RESET_ALL}")
+        print(f"{Fore.YELLOW}Ecco alcuni Pre-Ordini disponibili su PlayStation Store:{Style.RESET_ALL}")
         for idx, (nome, id_gioco) in enumerate(giochi, 1):
-            print(f"{Fore.WHITE}{idx}. {nome} {Fore.LIGHTBLACK_EX}- ID: {id_gioco}")
+            piattaforma = ""
+            prezzo = ""
+            nome_gioco = nome
+
+            # Inserisce uno spazio dopo PS5/PS4 e Pre-Order se attaccati
+            nome_gioco = re.sub(r'(PS[45])', r'\1 ', nome_gioco)
+            nome_gioco = re.sub(r'(Pre-Order)', r'\1 ', nome_gioco)
+
+            # Estrai piattaforma e Pre-Order se presenti all'inizio
+            piattaforma_match = re.match(r"^(PS[45])\s?(Pre-Order)?\s?(.*)", nome_gioco)
+            if piattaforma_match:
+                piattaforma = piattaforma_match.group(1)
+                pre_order = piattaforma_match.group(2) or ""
+                nome_gioco = piattaforma_match.group(3).strip()
+                piattaforma = f"{piattaforma} {pre_order}".strip()
+            # Estrai il prezzo se presente
+            prezzo_match = re.search(r"(€\s?\d+[\.,]\d{2})", nome_gioco)
+            if prezzo_match:
+                prezzo = prezzo_match.group(1)
+                nome_gioco = nome_gioco.replace(prezzo, "").strip()
+            # Stampa in formato leggibile
+            print(f"{Fore.WHITE}{idx}. {piattaforma} {nome_gioco} {prezzo} - ID: {id_gioco}")
         scelta = input(f"{Fore.YELLOW}Se vuoi vedere i dettagli di un gioco, inserisci il numero (oppure premi invio per tornare al menu): {Fore.WHITE}").strip()
         if scelta.isdigit() and 1 <= int(scelta) <= len(giochi):
             nome, id_gioco = giochi[int(scelta)-1]
@@ -424,7 +445,7 @@ def genera_post_telegram(info):
         post = f'<a href="{info["cover"]}">&#8205;</a>\n' + post  # anteprima immagine
     return post
 
-VERSIONE_CORRENTE = "1.0.1"
+VERSIONE_CORRENTE = "1.0.2"
 URL_VERSIONE = "https://raw.githubusercontent.com/DotHack88/ps-scraper/main/version.txt"
 URL_DOWNLOAD = "https://github.com/DotHack88/ps-scraper/releases/download/v1.0.0/scraper.exe"
 
@@ -467,17 +488,21 @@ def stampa_sfondo():
     print(f"{Fore.BLUE}│{' ' * (larghezza - 2)}│")
     print(f"{Fore.BLUE}╰{'─' * (larghezza - 2)}╯{Style.RESET_ALL}")
 
+def pulisci_schermo():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 if __name__ == "__main__":
     while True:
         stampa_sfondo()
         print(f"{Fore.LIGHTRED_EX}⚠️  Questo programma è opera di DotHack88. Ne è vietata la vendita e la distribuzione non autorizzata!{Style.RESET_ALL}")
 
-        print(f"{Fore.GREEN}Cosa vuoi cercare?")
+        print(f"{Fore.GREEN}Cosa vuoi fare?")
         print(f"{Fore.WHITE}1. 🔎 Cerca per ID gioco (consigliato)")
-        print(f"{Fore.WHITE}2. ❌ Esci")
+        print(f"{Fore.WHITE}2. 🔍 Cerca con filtri avanzati")
         print(f"{Fore.WHITE}3. ℹ️ Info sul programma")
-        print(f"{Fore.WHITE}4. 🔍 Cerca con filtri avanzati")
-        scelta = input(f"{Fore.YELLOW}Seleziona un'opzione (1-4): {Fore.WHITE}").strip()
+        print(f"{Fore.WHITE}4. 🆕 Pre-ordini")
+        print(f"{Fore.WHITE}5. ❌ Esci")
+        scelta = input(f"{Fore.YELLOW}Seleziona un'opzione (1-5): {Fore.WHITE}").strip()
 
         if scelta == "1":
             game_id = input(f"{Fore.YELLOW}Inserisci l'ID del gioco (es: EP0700-PPSA25381_00-ERSL000000000000): {Fore.WHITE}").strip()
@@ -496,16 +521,20 @@ if __name__ == "__main__":
                         print(f"{Fore.RED}🖼️ Copertina: {Fore.WHITE}{info['cover']}")
                     print(f"{Fore.CYAN}{'🟦'*20}{Style.RESET_ALL}")
         elif scelta == "2":
-            print(f"{Fore.RED}Uscita dal programma. Arrivederci!{Style.RESET_ALL}")
-            break  # Esce dal loop e chiude il programma
+            ricerca_con_filtri()
         elif scelta == "3":
+            print(f"{Fore.CYAN}ℹ️  Versione: {VERSIONE_CORRENTE}")
+            print(f"{Fore.CYAN}🔗 Repository: https://github.com/DotHack88/ps-scraper{Style.RESET_ALL}")
             print(f"{Fore.CYAN}ℹ️  Questo programma ti permette di confrontare prezzi e lingue dei giochi PlayStation Store nei vari paesi!{Style.RESET_ALL}")
             print(f"{Fore.LIGHTRED_EX}⚠️  Questo programma è opera di DotHack88. Ne è vietata la vendita e la distribuzione non autorizzata!{Style.RESET_ALL}")
             print(f"{Fore.CYAN}🔜 Prossimamente: ricerca per nome, filtri avanzati e molto altro!{Style.RESET_ALL}")
         elif scelta == "4":
-            ricerca_con_filtri()
+            mostra_ultimi_giochi()
+        elif scelta == "5":
+            print(f"{Fore.RED}Uscita dal programma. Arrivederci!{Style.RESET_ALL}")
+            break  # Esce dal loop e chiude il programma
         else:
-            print(f"{Fore.RED}Opzione non valida.{Style.RESET_ALL}")
+            print(f"{Fore.RED}Opzione non valida. Riprova!{Style.RESET_ALL}")
         
         # Chiedi se continuare
         continua = input(f"\n{Fore.YELLOW}Vuoi fare un'altra ricerca? (s/n): {Fore.WHITE}").strip().lower()
