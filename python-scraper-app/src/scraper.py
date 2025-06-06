@@ -301,6 +301,7 @@ def fetch_game_info(game_id):
     return results
 
 def mostra_ultimi_giochi():
+    # Pre-ordini: solo giochi con "Pre-Order" nel titolo
     url = "https://store.playstation.com/it-it/latest"
     print(f"{Fore.CYAN}{'🟦'*20}")
     print(f"{Fore.YELLOW}Estrazione dei Pre-Ordini dal PlayStation Store...{Style.RESET_ALL}")
@@ -312,15 +313,16 @@ def mostra_ultimi_giochi():
         LIMITE_GIOCHI = 20
         for a in soup.find_all('a', href=True):
             href = a['href']
-            if '/product/' in href:
-                titolo = a.text.strip()
+            titolo = a.text.strip()
+            print(f"Trovato: {titolo}")  # DEBUG
+            if '/product/' in href and "Pre-Order" in titolo:
                 id_gioco = href.split('/product/')[-1]
                 if titolo and id_gioco:
                     giochi.append((titolo, id_gioco))
             if len(giochi) >= LIMITE_GIOCHI:
                 break
         if not giochi:
-            print(f"{Fore.RED}Nessun gioco trovato!{Style.RESET_ALL}")
+            print(f"{Fore.RED}Nessun pre-ordine trovato!{Style.RESET_ALL}")
             return
         print(f"{Fore.YELLOW}Ecco alcuni Pre-Ordini disponibili su PlayStation Store:{Style.RESET_ALL}")
         for idx, (nome, id_gioco) in enumerate(giochi, 1):
@@ -349,6 +351,59 @@ def mostra_ultimi_giochi():
         scelta = input(f"{Fore.YELLOW}Se vuoi vedere i dettagli di un gioco, inserisci il numero (oppure premi invio per tornare al menu): {Fore.WHITE}").strip()
         if scelta.isdigit() and 1 <= int(scelta) <= len(giochi):
             nome, id_gioco = giochi[int(scelta)-1]
+            infos = fetch_game_info(id_gioco)
+            for info in infos:
+                print(f"{Fore.CYAN}{'🟦'*20}")
+                print(f"{Fore.YELLOW}🌍 Store: {Fore.WHITE}{info['store']}")
+                print(f"{Fore.GREEN}🎮 Titolo: {Fore.WHITE}{info['title']}")
+                print(f"{Fore.MAGENTA}💰 Prezzo: {Fore.WHITE}{info['price']} {Fore.LIGHTBLACK_EX}| 💶 Prezzo in EUR: {Fore.WHITE}{info['price_eur']}")
+                print(f"{Fore.BLUE}🔊 Lingue audio: {Fore.WHITE}{', '.join(info['audio_languages']) if info['audio_languages'] else 'N/A'}")
+                print(f"{Fore.BLUE}📝 Lingue a schermo: {Fore.WHITE}{', '.join(info['screen_languages']) if info['screen_languages'] else 'N/A'}")
+                if info['cover']:
+                    print(f"{Fore.RED}🖼️ Copertina: {Fore.WHITE}{info['cover']}")
+                print(f"{Fore.CYAN}{'🟦'*20}{Style.RESET_ALL}")
+        else:
+            print(f"{Fore.YELLOW}Torno al menu principale...{Style.RESET_ALL}")
+    except Exception as e:
+        print(f"{Fore.RED}Errore durante lo scraping: {e}{Style.RESET_ALL}")
+
+def mostra_nuovi_giochi():
+    url = "https://store.playstation.com/it-it/pages/latest/"
+    print(f"{Fore.CYAN}{'🟦'*20}")
+    print(f"{Fore.YELLOW}Estrazione dei Nuovi giochi dal PlayStation Store...{Style.RESET_ALL}")
+    try:
+        response = requests.get(url, headers=HEADERS, timeout=10)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
+        giochi = []
+        LIMITE_GIOCHI = 20
+
+        # Cerca tutti i <a> che puntano a /it-it/concept/
+        for a in soup.find_all('a', href=True):
+            href = a['href']
+            if href.startswith("/it-it/concept/"):
+                # Nome gioco
+                nome_tag = a.find('span', attrs={"data-qa": re.compile(r"productTile\d+#product-name")})
+                nome = nome_tag.text.strip() if nome_tag else ""
+                # Prezzo
+                prezzo_tag = a.find('span', attrs={"data-qa": re.compile(r"productTile\d+#price#display-price")})
+                prezzo = prezzo_tag.text.strip() if prezzo_tag else ""
+                # ID gioco
+                id_gioco = href.split("/")[-1]
+                if nome and id_gioco:
+                    giochi.append((nome, id_gioco, prezzo))
+            if len(giochi) >= LIMITE_GIOCHI:
+                break
+
+        if not giochi:
+            print(f"{Fore.RED}Nessun nuovo gioco trovato!{Style.RESET_ALL}")
+            return
+        print(f"{Fore.YELLOW}Ecco alcuni Nuovi giochi disponibili su PlayStation Store:{Style.RESET_ALL}")
+        for idx, (nome, id_gioco, prezzo) in enumerate(giochi, 1):
+            print(f"{Fore.WHITE}{idx}. {nome} {prezzo} - ID: {id_gioco}")
+        scelta = input(f"{Fore.YELLOW}Se vuoi vedere i dettagli di un gioco, inserisci il numero (oppure premi invio per tornare al menu): {Fore.WHITE}").strip()
+        if scelta.isdigit() and 1 <= int(scelta) <= len(giochi):
+            nome, id_gioco, _ = giochi[int(scelta)-1]
             infos = fetch_game_info(id_gioco)
             for info in infos:
                 print(f"{Fore.CYAN}{'🟦'*20}")
@@ -501,8 +556,9 @@ if __name__ == "__main__":
         print(f"{Fore.WHITE}2. 🔍 Cerca con filtri avanzati")
         print(f"{Fore.WHITE}3. ℹ️ Info sul programma")
         print(f"{Fore.WHITE}4. 🆕 Pre-ordini")
-        print(f"{Fore.WHITE}5. ❌ Esci")
-        scelta = input(f"{Fore.YELLOW}Seleziona un'opzione (1-5): {Fore.WHITE}").strip()
+        print(f"{Fore.WHITE}5. 🆕 Nuovi giochi")
+        print(f"{Fore.WHITE}6. ❌ Esci")
+        scelta = input(f"{Fore.YELLOW}Seleziona un'opzione (1-6): {Fore.WHITE}").strip()
 
         if scelta == "1":
             game_id = input(f"{Fore.YELLOW}Inserisci l'ID del gioco (es: EP0700-PPSA25381_00-ERSL000000000000): {Fore.WHITE}").strip()
@@ -531,6 +587,8 @@ if __name__ == "__main__":
         elif scelta == "4":
             mostra_ultimi_giochi()
         elif scelta == "5":
+            mostra_nuovi_giochi()
+        elif scelta == "6":
             print(f"{Fore.RED}Uscita dal programma. Arrivederci!{Style.RESET_ALL}")
             break  # Esce dal loop e chiude il programma
         else:
