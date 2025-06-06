@@ -554,7 +554,7 @@ if __name__ == "__main__":
         print(f"{Fore.GREEN}Cosa vuoi fare?")
         print(f"{Fore.WHITE}1. 🔎 Cerca per ID gioco (consigliato)")
         print(f"{Fore.WHITE}2. 🔍 Cerca con filtri avanzati")
-        print(f"{Fore.WHITE}3. ℹ️ Info sul programma")
+        print(f"{Fore.WHITE}3. ℹ️  Info sul programma")
         print(f"{Fore.WHITE}4. 🆕 Pre-ordini")
         print(f"{Fore.WHITE}5. 🆕 Nuovi giochi")
         print(f"{Fore.WHITE}6. ❌ Esci")
