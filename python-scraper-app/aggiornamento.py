@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 import os
 
-VERSIONE_CORRENTE = "1.1.1"
+VERSIONE_CORRENTE = "1.1.2"
 URL_VERSIONE = "https://raw.githubusercontent.com/DotHack88/ps-scraper/main/version.txt"
 URL_DOWNLOAD = "https://github.com/DotHack88/ps-scraper/releases/download/v1.0.0/scraper.exe"
 
