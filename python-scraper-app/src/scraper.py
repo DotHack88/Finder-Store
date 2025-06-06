@@ -500,7 +500,7 @@ def genera_post_telegram(info):
         post = f'<a href="{info["cover"]}">&#8205;</a>\n' + post  # anteprima immagine
     return post
 
-VERSIONE_CORRENTE = "1.0.4"
+VERSIONE_CORRENTE = "1.0.2"
 URL_VERSIONE = "https://raw.githubusercontent.com/DotHack88/ps-scraper/main/version.txt"
 URL_DOWNLOAD = "https://github.com/DotHack88/ps-scraper/releases/download/v1.0.0/scraper.exe"
 
@@ -547,9 +547,10 @@ def pulisci_schermo():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 if __name__ == "__main__":
-    controlla_aggiornamenti()
     while True:
         stampa_sfondo()
+        print(f"{Fore.LIGHTRED_EX}⚠️  Questo programma è opera di DotHack88. Ne è vietata la vendita e la distribuzione non autorizzata!{Style.RESET_ALL}")
+
         print(f"{Fore.GREEN}Cosa vuoi fare?")
         print(f"{Fore.WHITE}1. 🔎 Cerca per ID gioco (consigliato)")
         print(f"{Fore.WHITE}2. 🔍 Cerca con filtri avanzati")
@@ -560,21 +561,41 @@ if __name__ == "__main__":
         scelta = input(f"{Fore.YELLOW}Seleziona un'opzione (1-6): {Fore.WHITE}").strip()
 
         if scelta == "1":
-            # chiama la funzione per cerca per ID
-            pass
+            game_id = input(f"{Fore.YELLOW}Inserisci l'ID del gioco (es: EP0700-PPSA25381_00-ERSL000000000000): {Fore.WHITE}").strip()
+            if not game_id:
+                print(f"{Fore.RED}Nessun ID inserito.{Style.RESET_ALL}")
+            else:
+                infos = fetch_game_info(game_id)
+                for info in infos:
+                    print(f"{Fore.CYAN}{'🟦'*20}")
+                    print(f"{Fore.YELLOW}🌍 Store: {Fore.WHITE}{info['store']}")
+                    print(f"{Fore.GREEN}🎮 Titolo: {Fore.WHITE}{info['title']}")
+                    print(f"{Fore.MAGENTA}💰 Prezzo: {Fore.WHITE}{info['price']} {Fore.LIGHTBLACK_EX}| 💶 Prezzo in EUR: {Fore.WHITE}{info['price_eur']}")
+                    print(f"{Fore.BLUE}🔊 Lingue audio: {Fore.WHITE}{', '.join(info['audio_languages']) if info['audio_languages'] else 'N/A'}")
+                    print(f"{Fore.BLUE}📝 Lingue a schermo: {Fore.WHITE}{', '.join(info['screen_languages']) if info['screen_languages'] else 'N/A'}")
+                    if info['cover']:
+                        print(f"{Fore.RED}🖼️ Copertina: {Fore.WHITE}{info['cover']}")
+                    print(f"{Fore.CYAN}{'🟦'*20}{Style.RESET_ALL}")
         elif scelta == "2":
             ricerca_con_filtri()
         elif scelta == "3":
-            # info programma
-            pass
+            print(f"{Fore.CYAN}ℹ️  Versione: {VERSIONE_CORRENTE}")
+            print(f"{Fore.CYAN}🔗  Repository: https://github.com/DotHack88/ps-scraper{Style.RESET_ALL}")
+            print(f"{Fore.CYAN}ℹ️  Questo programma ti permette di confrontare prezzi e lingue dei giochi PlayStation Store nei vari paesi!{Style.RESET_ALL}")
+            print(f"{Fore.LIGHTRED_EX}⚠️  Questo programma è opera di DotHack88. Ne è vietata la vendita e la distribuzione non autorizzata!{Style.RESET_ALL}")
+            print(f"{Fore.CYAN}🔜 Prossimamente: ricerca per nome, filtri avanzati e molto altro!{Style.RESET_ALL}")
         elif scelta == "4":
             mostra_ultimi_giochi()
         elif scelta == "5":
             mostra_nuovi_giochi()
         elif scelta == "6":
             print(f"{Fore.RED}Uscita dal programma. Arrivederci!{Style.RESET_ALL}")
-            break
+            break  # Esce dal loop e chiude il programma
         else:
             print(f"{Fore.RED}Opzione non valida. Riprova!{Style.RESET_ALL}")
-
-        input(f"\n{Fore.YELLOW}Premi invio per continuare...{Style.RESET_ALL}")
+        
+        # Chiedi se continuare
+        continua = input(f"\n{Fore.YELLOW}Vuoi fare un'altra ricerca? (s/n): {Fore.WHITE}").strip().lower()
+        if continua != 's':
+            print(f"{Fore.RED}Uscita dal programma. Arrivederci!{Style.RESET_ALL}")
+            break
