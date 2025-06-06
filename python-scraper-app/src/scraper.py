@@ -524,7 +524,7 @@ if __name__ == "__main__":
             ricerca_con_filtri()
         elif scelta == "3":
             print(f"{Fore.CYAN}ℹ️  Versione: {VERSIONE_CORRENTE}")
-            print(f"{Fore.CYAN}🔗 Repository: https://github.com/DotHack88/ps-scraper{Style.RESET_ALL}")
+            print(f"{Fore.CYAN}🔗  Repository: https://github.com/DotHack88/ps-scraper{Style.RESET_ALL}")
             print(f"{Fore.CYAN}ℹ️  Questo programma ti permette di confrontare prezzi e lingue dei giochi PlayStation Store nei vari paesi!{Style.RESET_ALL}")
             print(f"{Fore.LIGHTRED_EX}⚠️  Questo programma è opera di DotHack88. Ne è vietata la vendita e la distribuzione non autorizzata!{Style.RESET_ALL}")
             print(f"{Fore.CYAN}🔜 Prossimamente: ricerca per nome, filtri avanzati e molto altro!{Style.RESET_ALL}")
