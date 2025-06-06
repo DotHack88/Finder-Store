@@ -500,7 +500,7 @@ def genera_post_telegram(info):
         post = f'<a href="{info["cover"]}">&#8205;</a>\n' + post  # anteprima immagine
     return post
 
-VERSIONE_CORRENTE = "1.0.2"
+VERSIONE_CORRENTE = "1.0.3"
 URL_VERSIONE = "https://raw.githubusercontent.com/DotHack88/ps-scraper/main/version.txt"
 URL_DOWNLOAD = "https://github.com/DotHack88/ps-scraper/releases/download/v1.0.0/scraper.exe"
 
