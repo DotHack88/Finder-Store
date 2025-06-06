@@ -314,7 +314,7 @@ def mostra_ultimi_giochi():
         for a in soup.find_all('a', href=True):
             href = a['href']
             titolo = a.text.strip()
-            print(f"Trovato: {titolo}")  # DEBUG
+            
             if '/product/' in href and "Pre-Order" in titolo:
                 id_gioco = href.split('/product/')[-1]
                 if titolo and id_gioco:
@@ -500,7 +500,7 @@ def genera_post_telegram(info):
         post = f'<a href="{info["cover"]}">&#8205;</a>\n' + post  # anteprima immagine
     return post
 
-VERSIONE_CORRENTE = "1.1.0"
+VERSIONE_CORRENTE = "1.1.1"
 URL_VERSIONE = "https://raw.githubusercontent.com/DotHack88/ps-scraper/main/version.txt"
 URL_DOWNLOAD = "https://github.com/DotHack88/ps-scraper/releases/download/v1.0.0/scraper.exe"
 
