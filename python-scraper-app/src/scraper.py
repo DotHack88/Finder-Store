@@ -547,6 +547,7 @@ def pulisci_schermo():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 if __name__ == "__main__":
+    controlla_aggiornamenti()  # <--- AGGIUNGI QUESTA RIGA QUI
     while True:
         stampa_sfondo()
         print(f"{Fore.LIGHTRED_EX}⚠️  Questo programma è opera di DotHack88. Ne è vietata la vendita e la distribuzione non autorizzata!{Style.RESET_ALL}")
