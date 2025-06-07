@@ -21,14 +21,10 @@ init(autoreset=True)
 STORE_URLS = [
     "https://store.playstation.com/it-it/product/",
     "https://store.playstation.com/tr-tr/product/",
-    "https://store.playstation.com/en-in/product/",
-    "https://store.playstation.com/ru-ru/product/",
+    "https://store.playstation.com/en-in/product/",    
     "https://store.playstation.com/en-za/product/",
-    "https://store.playstation.com/en-se/product/",
-    "https://store.playstation.com/da-dk/product/",
     "https://store.playstation.com/en-ae/product/",
     "https://store.playstation.com/en-gb/product/",
-    "https://store.playstation.com/en-no/product/",
     "https://store.playstation.com/de-ch/product/",
     "https://store.playstation.com/en-au/product/",
     "https://store.playstation.com/en-ca/product/",
@@ -56,22 +52,18 @@ lang_regex = re.compile(r'\b(' + '|'.join(known_languages) + r')\b', re.IGNORECA
 # Dizionario con i tassi di cambio rispetto all'EURO
 EXCHANGE_RATES = {
     "TRY": 0.029,  # Lira turca
-    "INR": 11.00,  # Rupia indiana
-    "RUB": 0.010,  # Rublo russo
+    "INR": 11.00,  # Rupia indiana    
     "ZAR": 0.049,  # Rand sudafricano
-    "SEK": 0.088,  # Corona svedese
-    "DKK": 0.13,   # Corona danese
     "AED": 0.25,   # Dirham UAE
     "GBP": 1.17,   # Sterlina britannica
-    "NOK": 0.087,  # Corona norvegese
     "CHF": 1.04,   # Franco svizzero
     "AUD": 0.57,   # Dollaro australiano
     "CAD": 0.68,   # Dollaro canadese
     "ILS": 0.25,   # Shekel israeliano
-    "MXN": 0.054,  # Peso messicano v
+    "MXN": 0.054,  # Peso messicano
     "NZD": 0.53,   # Dollaro neozelandese
     "HKD": 0.12,   # Dollaro di Hong Kong
-    "JPY": 0.062,   # Yen giapponese
+    "JPY": 0.062,  # Yen giapponese
     "USD": 0.92,   # Dollaro USA
     "IDR": 0.059,  # Rupia indonesiana
     "BRL": 0.15,   # Real brasiliano
@@ -145,11 +137,35 @@ def extract_price_and_currency(price_str, store_url=None):
     price_str = price_str.strip()
 
     currency_symbols = {
-        '€': 'EUR', '$': 'USD', '£': 'GBP', '¥': 'JPY', '₹': 'INR', 'R$': 'BRL', 'A$': 'AUD',
-        'HK$': 'HKD', 'CA$': 'CAD', 'NZ$': 'NZD', 'CHF': 'CHF', 'AED': 'AED', 'MXN': 'MXN',
-        'TL': 'TRY', 'TRY': 'TRY', '₺': 'TRY', 'RUB': 'RUB', 'ZAR': 'ZAR', 'ILS': 'ILS',
-        'Rs.': 'INR', 'Rs': 'INR', '₨': 'INR', 'ARS$': 'ARS', 'Rp': 'IDR', 'IDR': 'IDR',
-        'kr': 'NOK', 'Kr.': 'DKK', 'Kr': 'SEK', 'US$' : 'USD', 'MX$': 'MXN', 'NZ$': 'NZD',
+        '€': 'EUR', 
+        '$': 'USD', 
+        '£': 'GBP', 
+        '¥': 'JPY', 
+        '₹': 'INR', 
+        'R$': 'BRL', 
+        'A$': 'AUD',
+        'HK$': 'HKD', 
+        'CA$': 'CAD', 
+        'NZ$': 'NZD', 
+        'CHF': 'CHF', 
+        'AED': 'AED', 
+        'MXN': 'MXN',
+        'TL': 'TRY', 
+        'TRY': 'TRY', 
+        '₺': 'TRY', 
+        'ILS': 'ILS',
+        'Rs.': 'INR', 
+        'Rs': 'INR', 
+        '₨': 'INR', 
+        'ARS$': 'ARS', 
+        'Rp': 'IDR', 
+        'IDR': 'IDR',
+        'kr': 'SEK', 
+        'Kr.': 'DKK', 
+        'Kr': 'SEK', 
+        'US$' : 'USD', 
+        'MX$': 'MXN', 
+        'NZ$': 'NZD',
     }
 
     price_patterns = [
@@ -157,8 +173,6 @@ def extract_price_and_currency(price_str, store_url=None):
         r'([A-Za-z₹£$€¥₨₺]+)\s*([0-9.,]+)',     # USD 29.99, € 29,99, ₺ 29.99
         r'([₹£$€¥₨₺])\s*([0-9.,]+)',            # $ 29.99, ₺ 29.99
         r'Rp\s*([0-9.,]+)',                      # Rp 299.000 (Indonesia)
-        r'([0-9.,]+)\s*kr',                      # 299,00 kr (Norvegia/Svezia/Danimarca)
-        r'kr\s*([0-9.,]+)',                      # kr 299,00 (Norvegia/Svezia/Danimarca)
         r'R\$\s*([0-9.,]+)',                     # R$ 299,99 (Brasile)
         r'HK\$\s*([0-9.,]+)',                    # HK$ 299.99 (Hong Kong)
         r'₺\s*([0-9.,]+)',                       # ₺ 299,99 (Turchia)
@@ -182,12 +196,6 @@ def extract_price_and_currency(price_str, store_url=None):
                         currency_symbol = 'IDR'
                     elif '/pt-br/' in store_url:
                         currency_symbol = 'BRL'
-                    elif '/en-se/' in store_url:
-                        currency_symbol = 'SEK'
-                    elif '/da-dk/' in store_url:
-                        currency_symbol = 'DKK'
-                    elif '/en-no/' in store_url:
-                        currency_symbol = 'NOK'
                     elif '/ja-jp/' in store_url:
                         currency_symbol = 'JPY'
                     else:
