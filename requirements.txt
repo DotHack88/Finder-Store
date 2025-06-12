@@ -1,0 +1,6 @@
+beautifulsoup4
+requests
+requests_html
+selenium
+webdriver-manager
+colorama
