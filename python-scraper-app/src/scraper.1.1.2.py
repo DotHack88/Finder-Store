@@ -687,7 +687,7 @@ def genera_post_telegram(info):
 
 VERSIONE_CORRENTE = "1.1.2"
 URL_VERSIONE = "https://raw.githubusercontent.com/DotHack88/ps-scraper/main/version.txt"
-URL_DOWNLOAD = "https://github.com/DotHack88/ps-scraper/releases/download/v1.0.0/scraper.exe"
+URL_DOWNLOAD = "https://github.com/DotHack88/ps-scraper/releases/download/v.1.1.2/scraper.1.1.2.exe"
 
 def controlla_aggiornamenti():
     try:

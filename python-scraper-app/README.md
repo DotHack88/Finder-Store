@@ -1,43 +1,125 @@
-# Python Scraper App
+# 🎮 PS Store Scraper ![PS Logo](https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg)
 
-Questo progetto è un programma di scraping progettato per estrarre informazioni dai link del PlayStation Store basati sul nome del gioco fornito, "EP0700-PPSA25381_00-ERSL000000000000".
+> Un potente scraper per il PlayStation Store, semplice da usare e personalizzare! 🚀
 
-## Struttura del Progetto
+---
 
-Il progetto è organizzato come segue:
+## ✨ Funzionalità
+
+- 🔍 Estrazione automatica dei dati dal PlayStation Store
+- 🌍 Confronto prezzi tra store internazionali
+- 🗣️ Estrazione lingue audio e testo
+- 🖼️ Immagini di copertina incluse
+- 📦 Salvataggio dei risultati in vari formati (CSV, JSON, ecc.)
+- 🆕 Funzione aggiornata "Nuovi giochi"
+- 🔍 Ricerca per nome, ID o con filtri avanzati
+- ⚡ Interfaccia semplice e intuitiva (CLI + Tkinter)
+- 🛠️ Facile da personalizzare per le tue esigenze
+
+---
+
+## 📦 Installazione
+
+1. **Clona il repository**
+   ```bash
+   git clone https://github.com/DotHack88/ps-scraper.git
+   cd ps-scraper
+   ```
+
+2. **Installa le dipendenze**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. *(Facoltativo)* Installa anche [Google Chrome](https://www.google.com/chrome/) se vuoi usare Selenium per l’automazione avanzata.
+
+---
+
+## 🚀 Utilizzo
+
+Esegui lo scraper con:
+```bash
+python scraper.1.1.2.py
+```
+
+Segui il menu interattivo:
 
 ```
-python-scraper-app
-├── src
-│   ├── scraper.py         # Contiene la logica principale per il programma di scraping.
-│   ├── utils
-│   │   └── __init__.py    # Funzioni di utilità per supportare il processo di scraping.
-│   └── config
-│       └── settings.py    # Impostazioni di configurazione per il progetto.
-├── requirements.txt        # Elenco delle dipendenze necessarie per il progetto.
-└── README.md               # Documentazione del progetto.
+1. 🔎 Cerca per ID gioco
+2. 🔍 Cerca con filtri avanzati
+3. 🔤 Cerca per nome gioco
+4. ℹ️ Info sul programma
+5. 🆕 Pre-ordini
+6. 🆕 Nuovi giochi
+7. ❌ Esci
 ```
 
-## Installazione
+Puoi personalizzare i parametri nel file Python per adattare la ricerca alle tue esigenze.
 
-Per installare le dipendenze necessarie, eseguire il seguente comando:
+---
 
-```
-pip install -r requirements.txt
-```
-
-## Esecuzione
-
-Per eseguire il programma di scraping, utilizzare il seguente comando:
+## 🧾 Esempio di output
 
 ```
-python src/scraper.py
+🎮 Titolo: FINAL FANTASY VII REBIRTH
+💰 Prezzo: 79,99 € | 💶 EUR: 79.99
+🌍 Store: https://store.playstation.com/it-it/product/EP0082-PPSA08477_00-FF7REMAKEPART200
+🔊 Audio: inglese, giapponese
+📝 Testi: italiano, inglese, spagnolo
+🖼️ Copertina: https://image.api.playstation.com/...
 ```
 
-## Dettagli sul Funzionamento
+---
 
-Il programma invia richieste HTTP ai vari link del PlayStation Store e estrae informazioni basate sul nome del gioco fornito. Assicurati di avere una connessione a Internet attiva e di rispettare i termini di servizio del sito web da cui stai estraendo i dati.
+## 📁 Struttura del progetto
 
-## Contributi
+```
+ps-scraper/
+├── scraper.1.1.2.py         # File principale
+├── requirements.txt         # Dipendenze
+├── README.md
+└── ...
+```
 
-Se desideri contribuire a questo progetto, sentiti libero di aprire una pull request o segnalare problemi.
+---
+
+## 🖼️ Screenshot
+
+![Esempio di output](https://placehold.co/600x200/222/fff?text=PS+Scraper+Output)
+
+---
+
+## 🔗 Download versione EXE (Windows)
+
+Puoi usare anche la versione **standalone per Windows**:
+
+📥 [Download scraper.exe](https://github.com/DotHack88/ps-scraper/releases/download/v1.0.0/scraper.exe)
+
+---
+
+## 💡 Suggerimenti
+
+- Modifica le funzioni `search_generic`, `fetch_game_info`, `mostra_nuovi_giochi` per adattare il tool a nuovi bisogni
+- Esporta i dati in Excel o inviali via Telegram
+- Consulta il codice sorgente per creare bot o report automatici
+
+---
+
+## 🤝 Contribuisci
+
+Contributi, segnalazioni di bug e suggerimenti sono benvenuti!  
+Apri una issue o una pull request per partecipare allo sviluppo.
+
+---
+
+## 📄 Licenza
+
+### ⚠️ Licenza
+
+Questo progetto è protetto da copyright.  
+**Tutti i diritti riservati.**  
+Non è consentito copiare, modificare, distribuire o utilizzare il codice, in tutto o in parte, senza il consenso scritto dell’autore e senza il pagamento di un compenso economico.
+
+---
+
+> Made with ❤️ by DotHack88
