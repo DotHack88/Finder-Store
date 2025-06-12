@@ -169,9 +169,13 @@ def extract_price_and_currency(price_str, store_url=None):
     }
 
     price_patterns = [
-        r'([0-9.,]+)\s*([A-Za-z₹£$€¥₨₺]+)',     # 29.99 USD, 29,99 €, 29.99 ₺
-        r'([A-Za-z₹£$€¥₨₺]+)\s*([0-9.,]+)',     # USD 29.99, € 29,99, ₺ 29.99
-        r'([₹£$€¥₨₺])\s*([0-9.,]+)',            # $ 29.99, ₺ 29.99
+        r'(A\$)\s*([0-9.,]+)',
+        r'(NZ\$)\s*([0-9.,]+)',
+        r'(CA\$)\s*([0-9.,]+)',
+        r'(US\$)\s*([0-9.,]+)',
+        r'([0-9.,]+)\s*([A-Za-z₹£$€¥₨₺]+)',      # 29.99 USD, 29,99 €, 29.99 ₺
+        r'([A-Za-z₹£$€¥₨₺]+)\s*([0-9.,]+)',      # USD 29.99, € 29,99, ₺ 29.99
+        r'([₹£$€¥₨₺])\s*([0-9.,]+)',             # $ 29.99, ₺ 29.99
         r'Rp\s*([0-9.,]+)',                      # Rp 299.000 (Indonesia)
         r'R\$\s*([0-9.,]+)',                     # R$ 299,99 (Brasile)
         r'HK\$\s*([0-9.,]+)',                    # HK$ 299.99 (Hong Kong)
@@ -179,6 +183,10 @@ def extract_price_and_currency(price_str, store_url=None):
         r'₹\s*([0-9.,]+)',                       # ₹ 1,999.00 (India)
         r'Rs\.*\s*([0-9.,]+)',                   # Rs. 1,999.00 (India)
         r'([0-9.,]+)\s*₹',                       # 1,999.00 ₹ (India)
+        r'(A\$)\s*([0-9.,]+)',                   # A$ 19.99 → AUD
+        r'(NZ\$)\s*([0-9.,]+)',                  # NZ$ 24.99 → NZD
+
+        
     ]
 
     for pattern in price_patterns:
@@ -198,6 +206,14 @@ def extract_price_and_currency(price_str, store_url=None):
                         currency_symbol = 'BRL'
                     elif '/ja-jp/' in store_url:
                         currency_symbol = 'JPY'
+                    elif '/en-au/' in store_url:
+                        currency_symbol = 'AUD'
+                    elif '/en-nz/' in store_url:
+                        currency_symbol = 'NZD'
+                    elif '/en-ca/' in store_url:
+                        currency_symbol = 'CAD'
+                    elif '/en-us/' in store_url:
+                        currency_symbol = 'USD'
                     else:
                         currency_symbol = None
                 else:
@@ -207,6 +223,17 @@ def extract_price_and_currency(price_str, store_url=None):
                     price, currency_symbol = groups
                 else:
                     currency_symbol, price = groups
+
+            # Se il simbolo è "$" e lo store è noto, correggi la valuta
+            if currency_symbol == '$' and store_url:
+                    if '/en-au/' in store_url:
+                        currency_symbol = 'AUD'
+                    elif '/en-nz/' in store_url:
+                        currency_symbol = 'NZD'
+                    elif '/en-ca/' in store_url:
+                        currency_symbol = 'CAD'
+                    elif '/en-us/' in store_url:
+                        currency_symbol = 'USD'
 
             price = price.strip()
             # Gestione separatori decimali
