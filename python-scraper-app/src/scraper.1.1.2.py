@@ -481,7 +481,7 @@ def mostra_ricerca_generica():
         print(f"{Fore.BLUE}🔊 Lingue audio: {Fore.WHITE}{', '.join(info['audio_languages']) if info['audio_languages'] else 'N/A'}")
         print(f"{Fore.BLUE}📝 Lingue a schermo: {Fore.WHITE}{', '.join(info['screen_languages']) if info['screen_languages'] else 'N/A'}")
         if info['cover']:
-            print(f"{Fore.RED}🖼️ Copertina: {Fore.WHITE}{info['cover']}")
+            print(f"{Fore.RED}🎨 Copertina: {Fore.WHITE}{info['cover']}")
     print(f"{Fore.CYAN}{'🟦'*20}{Style.RESET_ALL}")
     
 def mostra_ultimi_giochi():
@@ -545,7 +545,7 @@ def mostra_ultimi_giochi():
                 print(f"{Fore.BLUE}🔊 Lingue audio: {Fore.WHITE}{', '.join(info['audio_languages']) if info['audio_languages'] else 'N/A'}")
                 print(f"{Fore.BLUE}📝 Lingue a schermo: {Fore.WHITE}{', '.join(info['screen_languages']) if info['screen_languages'] else 'N/A'}")
                 if info['cover']:
-                    print(f"{Fore.RED}🖼️ Copertina: {Fore.WHITE}{info['cover']}")
+                    print(f"{Fore.RED}🎨 Copertina: {Fore.WHITE}{info['cover']}")
                 print(f"{Fore.CYAN}{'🟦'*20}{Style.RESET_ALL}")
         else:
             print(f"{Fore.YELLOW}Torno al menu principale...{Style.RESET_ALL}")
@@ -598,7 +598,7 @@ def mostra_nuovi_giochi():
                 print(f"{Fore.BLUE}🔊 Lingue audio: {Fore.WHITE}{', '.join(info['audio_languages']) if info['audio_languages'] else 'N/A'}")
                 print(f"{Fore.BLUE}📝 Lingue a schermo: {Fore.WHITE}{', '.join(info['screen_languages']) if info['screen_languages'] else 'N/A'}")
                 if info['cover']:
-                    print(f"{Fore.RED}🖼️ Copertina: {Fore.WHITE}{info['cover']}")
+                    print(f"{Fore.RED}🎨 Copertina: {Fore.WHITE}{info['cover']}")
                 print(f"{Fore.CYAN}{'🟦'*20}{Style.RESET_ALL}")
         else:
             print(f"{Fore.YELLOW}Torno al menu principale...{Style.RESET_ALL}")
@@ -610,7 +610,7 @@ def popup_inserisci_id():
     from tkinter import simpledialog
     root = tk.Tk()
     root.withdraw()  # Nasconde la finestra principale
-    id_gioco = simpledialog.askstring("Inserisci ID gioco", "Inserisci l'ID del gioco (es: EP0700-PPSA25381_00-ERSL000000000000):")
+    id_gioco = simpledialog.askstring("Inserisci ID gioco", "🎮 Inserisci l'ID del gioco (es: EP0700-PPSA25381_00-ERSL000000000000):")
     root.destroy()
     return id_gioco
 
@@ -619,7 +619,7 @@ def ricerca_con_filtri():
     print(f"{Fore.YELLOW}Ricerca avanzata con filtri...{Style.RESET_ALL}")
     game_id = input(f"{Fore.YELLOW}Inserisci l'ID del gioco: {Fore.WHITE}").strip()
     if not game_id:
-        print(f"{Fore.RED}Nessun ID inserito. Torno al menu.{Style.RESET_ALL}")
+        print(f"{Fore.RED}🚨 Nessun ID inserito. Torno al menu.{Style.RESET_ALL}")
         return
 
     prezzo_min = input(f"{Fore.YELLOW}Prezzo minimo in EUR (invio per nessun filtro): {Fore.WHITE}").strip()
@@ -658,7 +658,7 @@ def ricerca_con_filtri():
         risultati.append(info)
 
     if not risultati:
-        print(f"{Fore.RED}Nessun risultato trovato con questi filtri.{Style.RESET_ALL}")
+        print(f"{Fore.RED}📢 Nessun risultato trovato con questi filtri.{Style.RESET_ALL}")
         return
 
     # Ordina i risultati per prezzo in euro (dal più basso al più alto)
@@ -672,7 +672,7 @@ def ricerca_con_filtri():
         print(f"{Fore.BLUE}🔊 Lingue audio: {Fore.WHITE}{', '.join(info['audio_languages']) if info['audio_languages'] else 'N/A'}")
         print(f"{Fore.BLUE}📝 Lingue a schermo: {Fore.WHITE}{', '.join(info['screen_languages']) if info['screen_languages'] else 'N/A'}")
         if info['cover']:
-            print(f"{Fore.RED}🖼️ Copertina: {Fore.WHITE}{info['cover']}")
+            print(f"{Fore.RED}🎨 Copertina: {Fore.WHITE}{info['cover']}")
     print(f"{Fore.CYAN}{'🟦'*20}{Style.RESET_ALL}")
 
 def genera_post_telegram(info):
@@ -684,6 +684,114 @@ def genera_post_telegram(info):
     if info.get('cover'):
         post = f'<a href="{info["cover"]}">&#8205;</a>\n' + post  # anteprima immagine
     return post
+
+def mostra_tutte_le_offerte():
+    from selenium import webdriver
+    from selenium.webdriver.chrome.service import Service
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.chrome.options import Options
+    from webdriver_manager.chrome import ChromeDriverManager
+    import time
+    import re
+
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--log-level=3")
+    chrome_options.add_argument("--disable-logging")
+    chrome_options.add_argument("--disable-speech-api")
+    chrome_options.add_argument("--mute-audio")
+    chrome_options.add_argument("--disable-features=SpeechRecognition")
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+
+    offerte_totali = []
+    pagina = 1
+    while True:
+        url = f"https://store.playstation.com/it-it/category/3f772501-f6f8-49b7-abac-874a88ca4897/{pagina}?FULL_GAME=storeDisplayClassification&GAME_BUNDLE=storeDisplayClassification&PREMIUM_EDITION=storeDisplayClassification"
+        print(f"{Fore.CYAN}・・・・・ Pagina {pagina} ・・・・・{Style.RESET_ALL}")
+        try:
+            driver.get(url)
+            time.sleep(3)
+
+            giochi = driver.find_elements(By.CSS_SELECTOR, "a.psw-link.psw-content-link")
+            if not giochi:
+                print(f"{Fore.YELLOW}👉 Nessun'altra offerta trovata. Fine delle pagine.{Style.RESET_ALL}")
+                break
+
+            pagina_offerte = []
+            for idx, gioco in enumerate(giochi, 1):
+                href = gioco.get_attribute("href")
+                titolo = ""
+                prezzo = ""
+                id_gioco = ""
+
+                spans = gioco.find_elements(By.TAG_NAME, "span")
+                for span in spans:
+                    data_qa = span.get_attribute("data-qa") or ""
+                    if "product-name" in data_qa:
+                        titolo = span.text.strip()
+                    if "price#display-price" in data_qa and "€" in span.text:
+                        prezzo = span.text.strip()
+
+                match = re.search(r'/product/([^/?]+)', href)
+                if match:
+                    id_gioco = match.group(1)
+                else:
+                    match = re.search(r'/concept/([^/?]+)', href)
+                    if match:
+                        id_gioco = match.group(1)
+
+                print(f"{Fore.WHITE}{idx}. {titolo} {prezzo} - ID: {id_gioco}")
+                pagina_offerte.append({
+                    'titolo': titolo,
+                    'prezzo': prezzo,
+                    'id': id_gioco,
+                    'url': href
+                })
+
+            offerte_totali.extend(pagina_offerte)
+
+            avanti = input(f"{Fore.YELLOW}Vuoi vedere la pagina successiva? (s/n): {Fore.WHITE}").strip().lower()
+            if avanti != 's':
+                break
+            pagina += 1
+        except Exception as e:
+            print(f"{Fore.RED}Errore durante lo scraping della pagina {pagina}: {e}{Style.RESET_ALL}")
+            break
+
+    driver.quit()
+
+    if offerte_totali:
+        termine = input(f"{Fore.YELLOW}Inserisci il nome (o parte) del gioco da cercare tra le offerte trovate: {Fore.WHITE}").strip().lower()
+        risultati = [o for o in offerte_totali if termine in o['titolo'].lower()]
+
+        if risultati:
+            print(f"{Fore.GREEN}✅ Giochi trovati:{Style.RESET_ALL}")
+            for idx, o in enumerate(risultati, 1):
+                print(f"{Fore.WHITE}{idx}. {o['titolo']} {o['prezzo']} - ID: {o['id']} - URL: {o['url']}")
+            
+            scelta = input(f"{Fore.YELLOW}Vuoi avviare lo scraping su tutti gli store per un gioco? Inserisci il numero oppure premi invio per annullare: {Fore.WHITE}").strip()
+            if scelta.isdigit() and 1 <= int(scelta) <= len(risultati):
+                selezionato = risultati[int(scelta) - 1]
+                print(f"{Fore.CYAN}🌍 Avvio scraping su tutti gli store per: {selezionato['titolo']} (ID: {selezionato['id']}){Style.RESET_ALL}")
+                infos = fetch_game_info(selezionato['id'])
+                for info in infos:
+                    print(f"{Fore.CYAN}{'🟦'*20}")
+                    print(f"{Fore.YELLOW}🌍 Store: {Fore.WHITE}{info['store']}")
+                    print(f"{Fore.GREEN}🎮 Titolo: {Fore.WHITE}{info['title']}")
+                    print(f"{Fore.MAGENTA}💰 Prezzo: {Fore.WHITE}{info['price']} {Fore.LIGHTBLACK_EX}| 💶 Prezzo in EUR: {Fore.WHITE}{info['price_eur']}")
+                    print(f"{Fore.BLUE}🔊 Lingue audio: {Fore.WHITE}{', '.join(info['audio_languages']) if info['audio_languages'] else 'N/A'}")
+                    print(f"{Fore.BLUE}📝 Lingue a schermo: {Fore.WHITE}{', '.join(info['screen_languages']) if info['screen_languages'] else 'N/A'}")
+                    if info['cover']:
+                        print(f"{Fore.RED}🎨 Copertina: {Fore.WHITE}{info['cover']}")
+                    print(f"{Fore.CYAN}{'🟦'*20}{Style.RESET_ALL}")
+            else:
+                print(f"{Fore.YELLOW}Scraping su tutti gli store annullato.{Style.RESET_ALL}")
+        else:
+            print(f"{Fore.RED}❌ Nessun gioco trovato con quel nome.{Style.RESET_ALL}")
+    else:
+        print(f"{Fore.RED}❌ Nessuna offerta da cercare.{Style.RESET_ALL}")
+
 
 VERSIONE_CORRENTE = "1.1.2"
 URL_VERSIONE = "https://raw.githubusercontent.com/DotHack88/ps-scraper/main/version.txt"
@@ -740,17 +848,18 @@ if __name__ == "__main__":
         print(f"{Fore.GREEN}Cosa vuoi fare?")
         print(f"{Fore.WHITE}1. 🔎 Cerca per ID gioco (consigliato)")
         print(f"{Fore.WHITE}2. 🔍 Cerca con filtri avanzati")
-        print(f"{Fore.WHITE}3. 🔤 Cerca per nome gioco")  # Nuova opzione
-        print(f"{Fore.WHITE}4. ℹ️  Info sul programma")
+        print(f"{Fore.WHITE}3. 🔤 Cerca per nome gioco")
+        print(f"{Fore.WHITE}4. 💥 Tutte le offerte")
         print(f"{Fore.WHITE}5. 🆕 Pre-ordini")
         print(f"{Fore.WHITE}6. 🆕 Nuovi giochi")
-        print(f"{Fore.WHITE}7. ❌ Esci")
-        scelta = input(f"{Fore.YELLOW}Seleziona un'opzione (1-7): {Fore.WHITE}").strip()
+        print(f"{Fore.WHITE}7. 📌 Info sul programma")
+        print(f"{Fore.WHITE}8. ❌ Esci")
+        scelta = input(f"{Fore.YELLOW}Seleziona un'opzione (1-8): {Fore.WHITE}").strip()
 
         if scelta == "1":
-            game_id = input(f"{Fore.YELLOW}Inserisci l'ID del gioco (es: EP0700-PPSA25381_00-ERSL000000000000): {Fore.WHITE}").strip()
+            game_id = input(f"{Fore.YELLOW}🎮 Inserisci l'ID del gioco (es: EP0700-PPSA25381_00-ERSL000000000000): {Fore.WHITE}").strip()
             if not game_id:
-                print(f"{Fore.RED}Nessun ID inserito.{Style.RESET_ALL}")
+                print(f"{Fore.RED}🚨 Nessun ID inserito.{Style.RESET_ALL}")
             else:
                 infos = fetch_game_info(game_id)
                 for info in infos:
@@ -761,30 +870,32 @@ if __name__ == "__main__":
                     print(f"{Fore.BLUE}🔊 Lingue audio: {Fore.WHITE}{', '.join(info['audio_languages']) if info['audio_languages'] else 'N/A'}")
                     print(f"{Fore.BLUE}📝 Lingue a schermo: {Fore.WHITE}{', '.join(info['screen_languages']) if info['screen_languages'] else 'N/A'}")
                     if info['cover']:
-                        print(f"{Fore.RED}🖼️ Copertina: {Fore.WHITE}{info['cover']}")
+                        print(f"{Fore.RED}🎨 Copertina: {Fore.WHITE}{info['cover']}")
                     print(f"{Fore.CYAN}{'🟦'*20}{Style.RESET_ALL}")
         elif scelta == "2":
             ricerca_con_filtri()
         elif scelta == "3":
             mostra_ricerca_generica()
         elif scelta == "4":
-            print(f"{Fore.CYAN}ℹ️  Versione: {VERSIONE_CORRENTE}")
-            print(f"{Fore.CYAN}🔗  Repository: https://github.com/DotHack88/ps-scraper{Style.RESET_ALL}")
-            print(f"{Fore.CYAN}ℹ️  Questo programma ti permette di confrontare prezzi e lingue dei giochi PlayStation Store nei vari paesi!{Style.RESET_ALL}")
-            print(f"{Fore.LIGHTRED_EX}⚠️  Questo programma è opera di DotHack88. Ne è vietata la vendita e la distribuzione non autorizzata!{Style.RESET_ALL}")
-            print(f"{Fore.CYAN}🔜 Prossimamente: ricerca per nome, filtri avanzati e molto altro!{Style.RESET_ALL}")
+            mostra_tutte_le_offerte()
         elif scelta == "5":
             mostra_ultimi_giochi()
         elif scelta == "6":
             mostra_nuovi_giochi()
         elif scelta == "7":
-            print(f"{Fore.RED}Uscita dal programma. Arrivederci!{Style.RESET_ALL}")
-            break  # Esce dal loop e chiude il programma
+            print(f"{Fore.CYAN}ℹ️  Versione: {VERSIONE_CORRENTE}")
+            print(f"{Fore.CYAN}🌎 Repository: https://github.com/DotHack88/ps-scraper{Style.RESET_ALL}")
+            print(f"{Fore.CYAN}ℹ️  Questo programma ti permette di confrontare prezzi e lingue dei giochi PlayStation Store nei vari paesi!{Style.RESET_ALL}")
+            print(f"{Fore.LIGHTRED_EX}⚠️  Questo programma è opera di DotHack88. Ne è vietata la vendita e la distribuzione non autorizzata!{Style.RESET_ALL}")
+            print(f"{Fore.CYAN}🔜 Prossimamente: ricerca per nome, filtri avanzati e molto altro!{Style.RESET_ALL}")
+        elif scelta == "8":
+            print(f"{Fore.RED}👋 Uscita dal programma. Arrivederci!{Style.RESET_ALL}")
+            break
         else:
             print(f"{Fore.RED}Opzione non valida. Riprova!{Style.RESET_ALL}")
         
         # Chiedi se continuare
         continua = input(f"\n{Fore.YELLOW}Vuoi fare un'altra ricerca? (s/n): {Fore.WHITE}").strip().lower()
         if continua != 's':
-            print(f"{Fore.RED}Uscita dal programma. Arrivederci!{Style.RESET_ALL}")
+            print(f"{Fore.RED}👋 Uscita dal programma. Arrivederci!{Style.RESET_ALL}")
             break
