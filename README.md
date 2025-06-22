@@ -36,7 +36,7 @@ Per motivi di sicurezza e tracciabilità, l'eseguibile è protetto da una licenz
 
     1 gen_id.exe: Generatore ID macchina.
 
-    2 Finder Store.exe: Programma principale, richiede chiave di licenza.
+    2 Finder.exe: Programma principale, richiede chiave di licenza.
 
 📝 Procedura per attivazione
 
@@ -56,7 +56,7 @@ Per motivi di sicurezza e tracciabilità, l'eseguibile è protetto da una licenz
 
     Esegui il programma
 
-    Avvia Finder Store.exe, inserisci la chiave ricevuta e inizia ad usare il software.
+    Avvia Finder.exe, inserisci la chiave ricevuta e inizia ad usare il software.
 
 📬 Contatti
 
