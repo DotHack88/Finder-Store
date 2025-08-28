@@ -64,5 +64,5 @@ Per assistenza tecnica, richieste di attivazione o segnalazioni:
 
     Email: [inserisci qui]
 
-    Telegram: [inserisci qui]
+    Telegram: ![Telegram](https://t.me/Tidus291)
 
