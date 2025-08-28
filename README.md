@@ -1,6 +1,5 @@
 # 🎮 PlayStation Finder Store
 
-![Telegram](https://t.me/Tidus291)
 ![Python](https://img.shields.io/badge/Python-3.x-blue.svg)
 ![Requests](https://img.shields.io/badge/Library-Requests-green.svg)
 ![BeautifulSoup](https://img.shields.io/badge/Library-BeautifulSoup-green.svg)
@@ -63,7 +62,5 @@ Per motivi di sicurezza e tracciabilità, l'eseguibile è protetto da una licenz
 
 Per assistenza tecnica, richieste di attivazione o segnalazioni:
 
-    Email: [inserisci qui]
-
-    Telegram: ![Telegram](https://t.me/Tidus291)
+Telegram: ![Telegram](https://t.me/Tidus291)
 
