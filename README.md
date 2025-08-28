@@ -1,5 +1,6 @@
 # 🎮 PlayStation Finder Store
 
+![Telegram](https://t.me/Tidus291)
 ![Python](https://img.shields.io/badge/Python-3.x-blue.svg)
 ![Requests](https://img.shields.io/badge/Library-Requests-green.svg)
 ![BeautifulSoup](https://img.shields.io/badge/Library-BeautifulSoup-green.svg)
