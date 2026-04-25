@@ -62,4 +62,4 @@ Per motivi di sicurezza e tracciabilità, l'eseguibile è protetto da una licenz
 
 Per assistenza tecnica, richieste di attivazione o segnalazioni:
 
-Telegram: [![Telegram](https://img.shields.io/badge/Telegram-Join-blue?logo=telegram)](https://t.me/@Tidus291)
+[![Telegram](https://img.shields.io/badge/Telegram-Join-blue?logo=telegram)](https://t.me/@Tidus291)
